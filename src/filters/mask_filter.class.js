@@ -46,27 +46,26 @@
       }
 
       var context = canvasEl.getContext('2d'),
-          imageData = context.getImageData(0, 0, canvasEl.width, canvasEl.height),
+          imageData = context.getImageData(0, 0, canvasEl.swidth, canvasEl.sheight),
           data = imageData.data,
           maskEl = this.mask.getElement(),
           maskCanvasEl = fabric.util.createCanvasElement(),
           channel = this.channel,
           i,
-          iLen = imageData.width * imageData.height * 4;
+          iLen = canvasEl.swidth * canvasEl.sheight * 4;
 
-      maskCanvasEl.width = canvasEl.width;
-      maskCanvasEl.height = canvasEl.height;
+      maskCanvasEl.width = canvasEl.swidth;
+      maskCanvasEl.height = canvasEl.sheight;
+      maskCanvasEl.getContext('2d').drawImage(maskEl, 0, 0, maskEl.width, maskEl.height, 0, 0, canvasEl.swidth, canvasEl.sheight);
 
-      maskCanvasEl.getContext('2d').drawImage(maskEl, 0, 0, canvasEl.width, canvasEl.height);
-
-      var maskImageData = maskCanvasEl.getContext('2d').getImageData(0, 0, canvasEl.width, canvasEl.height),
+      var maskImageData = maskCanvasEl.getContext('2d').getImageData(0, 0, canvasEl.swidth, canvasEl.sheight),
           maskData = maskImageData.data;
 
       for (i = 0; i < iLen; i += 4) {
         data[i + 3] = maskData[i + channel];
       }
 
-      context.putImageData(imageData, 0, 0);
+      context.putImageData(imageData, canvasEl.clipValueX, canvasEl.clipValueY);
     },
 
     /**
