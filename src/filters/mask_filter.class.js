@@ -44,15 +44,14 @@
       if (!this.mask) {
         return;
       }
-
       var context = canvasEl.getContext('2d'),
-          imageData = context.getImageData(0, 0, canvasEl.swidth, canvasEl.sheight),
+          imageData = context.getImageData(canvasEl.clipValueX, canvasEl.clipValueY, canvasEl.swidth, canvasEl.sheight),
           data = imageData.data,
           maskEl = this.mask.getElement(),
           maskCanvasEl = fabric.util.createCanvasElement(),
           channel = this.channel,
           i,
-          iLen = canvasEl.swidth * canvasEl.sheight * 4;
+          iLen = imageData.data.length * 4;
 
       maskCanvasEl.width = canvasEl.swidth;
       maskCanvasEl.height = canvasEl.sheight;
